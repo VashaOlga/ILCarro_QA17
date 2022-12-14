@@ -28,9 +28,45 @@ public class RegistrationTest extends TestBase{
         app.getNewUser().fillRegistrationForm(data);
         app.getNewUser().submitRegistration();
 
-        app.getNewUser().pause(3);
-        Assert.assertTrue(app.getUser().isLogged());
+        app.getNewUser().pause(5);
+//        Assert.assertTrue(app.getUser().isLogged());
+        Assert.assertTrue(app.getUser().isLoggedSuccess());
+    }
 
+    @Test
+    public void registrationExistUserTest(){
+        int i = (int) (System.currentTimeMillis() / 1000) % 3600;
+        String name = "Ted"+i;
+        String lastName = "Smith"+i;
+        User data = new User().withName(name).withLastName(lastName).withEmail("612test@mail.com").withPassword("1425Asd@");
+
+        app.getNewUser().openRegistrationForm();
+        app.getNewUser().fillRegistrationForm(data);
+        app.getNewUser().submitRegistration();
+
+        app.getNewUser().pause(5);
+        Assert.assertTrue(app.getNewUser().isExpectedMessage(By.cssSelector(".dialog-container"), "User already exists"));
+
+    }
+
+    @Test
+    public void registrationWrongEmailWithoutStrudelTest(){
+        int i = (int) (System.currentTimeMillis() / 1000) % 3600;
+        String name = "Ted"+i;
+        String lastName = "Smith"+i;
+        String email = i+"testmail.com";
+        String password = i+"Zxcvb@";
+
+        User data = new User().withName(name).withLastName(lastName).withEmail(email).withPassword(password);
+        app.getNewUser().openRegistrationForm();
+        app.getNewUser().fillRegistrationForm(data);
+        app.getNewUser().submitRegistration();
+
+        app.getNewUser().pause(5);
+//        Assert.assertTrue(app.getNewUser().isExpectedMessage(By.xpath("//div[@class='error']"),"Wrong email format"));
+//        Assert.assertTrue(app.getNewUser().isExpectedMessage(By.xpath("//div[@class='error ng-star-inserted']"),"Wrong email format"));
+        Assert.assertTrue(app.getNewUser().isElementPresent(By.xpath("//div[text()='Wrong email format']")));
+        Assert.assertFalse(app.getUser().isElementPresent(By.xpath("//button[text()='Ok']")));
     }
 
     @AfterMethod

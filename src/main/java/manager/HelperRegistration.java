@@ -19,7 +19,12 @@ public class HelperRegistration extends HelperBase{
         type(By.xpath("//input[@id='lastName']"), data.getLastName());
         type(By.xpath("//input[@id='email']"), data.getEmail());
         type(By.xpath("//input[@id='password']"), data.getPassword());
-        click(By.xpath("//div[@class='checkbox-container']"));
+//        click(By.xpath("//div[@class='checkbox-container']"));
+//        click(By.xpath("//input[@class='ng-dirty ng-touched ng-valid']"));
+
+        if(!isElementPresent(By.xpath("//input[@class='ng-dirty ng-touched ng-valid']"))){
+            click(By.xpath("//div[@class='checkbox-container']"));
+        }
 
     }
 

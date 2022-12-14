@@ -9,13 +9,15 @@ public class ApplicationManager {
     HelperUser user;
     HelperRegistration newUser;
 
+    HelperCar car;
+
     public void init(){
         wd = new ChromeDriver();
         wd.manage().window().maximize();
         wd.navigate().to("https://ilcarro.web.app/search");
         user = new HelperUser(wd);
         newUser = new HelperRegistration(wd);
-
+        car = new HelperCar(wd);
 
     }
 //    612test@mail.com
@@ -27,6 +29,11 @@ public class ApplicationManager {
 
     public HelperRegistration getNewUser() {
         return newUser;
+    }
+
+
+    public HelperCar getCar() {
+        return car;
     }
 
     public void stop() {
